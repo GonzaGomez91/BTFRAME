@@ -1,0 +1,96 @@
+#include <Arduino.h>
+#include "SerialConsole.h"
+#include "Motor.h"
+
+extern Motor motorIzquierdo;
+extern Motor motorDerecho;
+
+static void showHelp();
+static void controlLeftMotor();
+static void controlRightMotor();
+static void controlBothMotors();
+static void stopMotors();
+
+void initSerialConsole() {
+    Serial.println("BTFRAME iniciado");
+    showHelp();
+
+    motorIzquierdo.setSpeed(0);
+    motorDerecho.setSpeed(0);
+}
+
+void processSerialCommands() {
+    if (Serial.available() <= 0) {
+        return;
+    }
+
+    char command = Serial.read();
+
+    switch (command) {
+        case 'i':
+            controlLeftMotor();
+            break;
+
+        case 'd':
+            controlRightMotor();
+            break;
+
+        case 'a':
+            controlBothMotors();
+            break;
+
+        case 's':
+            stopMotors();
+            break;
+
+        case 'e':
+            motorIzquierdo.printStatus();
+            motorDerecho.printStatus();
+            break;
+
+        case '\n':
+        case '\r':
+        case ' ':
+            break;
+
+        default:
+            Serial.println("Comando no reconocido");
+            showHelp();
+            break;
+    }
+}
+
+static void showHelp() {
+    Serial.println("=== Comandos ===");
+    Serial.println("i <speed>  -> motor izquierdo");
+    Serial.println("d <speed>  -> motor derecho");
+    Serial.println("a <speed>  -> ambos motores");
+    Serial.println("s          -> detener ambos");
+    Serial.println("e          -> estado motores");
+}
+
+static void controlLeftMotor() {
+    int speed = Serial.parseInt();
+    motorIzquierdo.setSpeed(speed);
+    motorIzquierdo.printStatus();
+}
+
+static void controlRightMotor() {
+    int speed = Serial.parseInt();
+    motorDerecho.setSpeed(speed);
+    motorDerecho.printStatus();
+}
+
+static void controlBothMotors() {
+    int speed = Serial.parseInt();
+    motorIzquierdo.setSpeed(speed);
+    motorDerecho.setSpeed(speed);
+    motorIzquierdo.printStatus();
+    motorDerecho.printStatus();
+}
+
+static void stopMotors() {
+    motorIzquierdo.setSpeed(0);
+    motorDerecho.setSpeed(0);
+    Serial.println("Motores detenidos");
+}
