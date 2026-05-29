@@ -72,21 +72,20 @@ static void showHelp() {
 static void controlLeftMotor() {
     int speed = Serial.parseInt();
     motorIzquierdo.setSpeed(speed);
-    motorIzquierdo.printStatus();
+    
 }
 
 static void controlRightMotor() {
     int speed = Serial.parseInt();
     motorDerecho.setSpeed(speed);
-    motorDerecho.printStatus();
+   
 }
 
 static void controlBothMotors() {
     int speed = Serial.parseInt();
     motorIzquierdo.setSpeed(speed);
     motorDerecho.setSpeed(speed);
-    motorIzquierdo.printStatus();
-    motorDerecho.printStatus();
+  
 }
 
 static void stopMotors() {

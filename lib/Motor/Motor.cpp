@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include "Motor.h"
 
-
 Motor::Motor(const char *idMotor, int pin1, int pin2, int pinPWM)
     : id(idMotor),
       in1(pin1),
@@ -15,7 +14,6 @@ Motor::Motor(const char *idMotor, int pin1, int pin2, int pinPWM)
 
     update();
 }
-
 
 void Motor::setSpeed(int newSpeed)
 {
@@ -31,12 +29,14 @@ void Motor::stop()
 void Motor::update()
 {
     int pwm = abs(speed);
-    if (speed > 0) {
+    if (speed > 0)
+    {
         digitalWrite(in1, HIGH);
         digitalWrite(in2, LOW);
         analogWrite(en, pwm);
     }
-    else if (speed < 0) {
+    else if (speed < 0)
+    {
         digitalWrite(in1, LOW);
         digitalWrite(in2, HIGH);
         analogWrite(en, pwm);
@@ -48,10 +48,11 @@ void Motor::update()
         digitalWrite(in2, LOW);
         analogWrite(en, 0);
     }
-}
     
-
-
+    #if MOTOR_DEBUG
+        printStatus();
+    #endif
+}
 
 void Motor::printStatus()
 {
@@ -63,13 +64,16 @@ void Motor::printStatus()
 
     Serial.print("Estado: ");
 
-    if (speed > 0) {
+    if (speed > 0)
+    {
         Serial.println("ADELANTE");
     }
-    else if (speed < 0) {
+    else if (speed < 0)
+    {
         Serial.println("ATRAS");
     }
-    else {
+    else
+    {
         Serial.println("DETENIDO");
     }
 }

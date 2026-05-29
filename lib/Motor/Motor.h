@@ -1,5 +1,5 @@
 #pragma once
-
+#define MOTOR_DEBUG 1
 
 enum MotorDirection {
     FORWARD,
