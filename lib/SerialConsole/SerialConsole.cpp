@@ -1,7 +1,9 @@
 #include <Arduino.h>
 #include "SerialConsole.h"
 #include "Motor.h"
+#include "DriveController.h"
 
+extern DriveController drive;
 extern Motor motorIzquierdo;
 extern Motor motorDerecho;
 
@@ -27,6 +29,51 @@ void processSerialCommands() {
     char command = Serial.read();
 
     switch (command) {
+        case 'f':{
+            int speed = Serial.parseInt();
+            drive.setLinearSpeed(speed);
+            drive.setAngularSpeed(0);
+            drive.update();
+            break;
+        }
+
+        case 'b':{
+            int speed = Serial.parseInt();
+            drive.setLinearSpeed(-speed);
+            drive.setAngularSpeed(0);
+            drive.update();
+            break;
+        }
+
+        case 'l':{
+            int speed = Serial.parseInt();
+            drive.setLinearSpeed(0);
+            drive.setAngularSpeed(speed);
+            drive.update();
+            break;
+        }
+
+        case 'r':{
+            int speed = Serial.parseInt();
+            drive.setLinearSpeed(0);
+            drive.setAngularSpeed(-speed);
+            drive.update();
+            break;
+        }
+
+        case 'c':{
+            int linear = Serial.parseInt();
+            int angular = Serial.parseInt();
+            drive.setLinearSpeed(linear);
+            drive.setAngularSpeed(angular);
+            drive.update();
+            break;
+        }
+        case 's':{
+            drive.stop();
+        }
+            
+        
         case 'i':
             controlLeftMotor();
             break;
@@ -39,9 +86,6 @@ void processSerialCommands() {
             controlBothMotors();
             break;
 
-        case 's':
-            stopMotors();
-            break;
 
         case 'e':
             motorIzquierdo.printStatus();
