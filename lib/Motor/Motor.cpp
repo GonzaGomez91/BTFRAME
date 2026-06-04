@@ -21,10 +21,6 @@ void Motor::setSpeed(int newSpeed)
     update();
 }
 
-void Motor::stop()
-{
-    setSpeed(0);
-}
 
 void Motor::update()
 {
