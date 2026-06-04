@@ -1,16 +1,10 @@
 #pragma once
 #define MOTOR_DEBUG 1
 
-enum MotorDirection {
-    FORWARD,
-    BACKWARD,
-    STOPPED
-};
 
 class Motor
 {
 private:
-    /* data */
     const char* const id;
     const int in1;
     const int in2;
